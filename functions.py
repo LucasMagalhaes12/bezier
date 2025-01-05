@@ -1,7 +1,6 @@
 def lerp(a, b, t):
     return a * (1-t) + b * t
 
-print(lerp(1, 100, 0.1))
 
 def bezier(a:int, b:int, c:int, d:int, t:int):
     e = lerp(a, b, t)

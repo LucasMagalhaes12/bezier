@@ -24,17 +24,22 @@ class PyEngine():
         # draw
         self._squarePos = [[160, 360], [160, 120], [480, 120], [480, 360]]
 
-    def draw(self):
-        
 
+    def mouseCollisionCircle(self, x:int, y:int, radius:int):
+        xm, ym = pygame.mouse.get_pos()
+        if radius > abs(x - xm) and radius > abs(y - ym):
+            return True
+        return False
+
+
+    def draw(self):
         for x, y in self._squarePos:
-            self.drawCircle(x, y, radius=7, color=(255, 0, 0))
+            self.drawCircle(x, y, radius=7, color=(50, 90, 235))
 
         for i in range(0, 101, 5):
             x = bezier(self._squarePos[0][0], self._squarePos[1][0], self._squarePos[2][0], self._squarePos[3][0], i/100)
             y = bezier(self._squarePos[0][1], self._squarePos[1][1], self._squarePos[2][1], self._squarePos[3][1], i/100)
             self.drawCircle(x, y)
-
 
 
     def drawCircle(self, x:int, y:int, radius:int=5, color:tuple=(255, 255, 255)):
@@ -47,14 +52,11 @@ class PyEngine():
 
     def move(self):
         if self._keys["MOUSE"]:
-            # print("\nreset----")
-            
             n = 0
             for xS, yS in self._squarePos:
-                x, y = pygame.mouse.get_pos()
-                # print(xS, yS, x, y, " - ", abs(x - xS), abs(y - yS))
-                if 10 > abs(x - xS) and 10 > abs(y - yS):
-                    self._squarePos[n] = [x, y]
+                if self.mouseCollisionCircle(xS, yS, 30):
+                    self._squarePos[n] = pygame.mouse.get_pos()
+                    break
                 n += 1
 
 
@@ -76,7 +78,6 @@ class PyEngine():
                     if event.key == self._configKeys[keyPressed]:
                         self._keys[keyPressed] = False
             
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self._keys["MOUSE"] = True
             if event.type == pygame.MOUSEBUTTONUP:
@@ -98,6 +99,7 @@ class PyEngine():
             pygame.display.update()
 
         pygame.quit()
+
 
     def get_dt(self):
         return self._dt
