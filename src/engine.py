@@ -2,9 +2,10 @@ import pygame
 from time import time
 from functions import bezier
 
+
 class PyEngine():
-    def __init__(self, resolution:tuple, caption="Game"):
-        
+    def __init__(self, resolution:tuple, caption:str="Game"):
+
         # init
         pygame.init()
         self._screen = pygame.display.set_mode(resolution)
@@ -90,7 +91,6 @@ class PyEngine():
             self._dt = now - self._prevTime
             self._prevTime = now
             self._clock.tick(self._FPS)
-
             self._screen.fill("black")
             self.controls()
             self.move()
